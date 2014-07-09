@@ -7,9 +7,10 @@
               android:padding="20dp">
 
     <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:id="@+id/guest_image"/>
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:id="@+id/guest_image"
+            android:src="@drawable/unknown_guest"/>
 
     <TextView
             android:layout_width="wrap_content"

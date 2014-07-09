@@ -3,7 +3,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:background="@drawable/shadow_background_right">
 
 
     <EditText
@@ -16,8 +17,42 @@
 
     <ListView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:id="@+id/guest_list"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"/>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:layout_margin="5dp"
+                  android:layout_marginBottom="10dp">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="18dp"
+                android:gravity="center"
+                android:id="@+id/guest_statistics_total"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="18dp"
+                android:gravity="center"
+                android:id="@+id/guest_statistics_present"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="18dp"
+                android:gravity="center"
+                android:id="@+id/guest_statistics_not_present"/>
+
+
+    </LinearLayout>
 
 </LinearLayout>
