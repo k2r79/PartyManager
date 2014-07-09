@@ -4,8 +4,8 @@ import com.j256.ormlite.field.DatabaseField;
 
 public abstract class Guest
 {
-    @DatabaseField(id = true, generatedId = false)
-    protected int id;
+    @DatabaseField(generatedId = true)
+    private int id;
 
     @DatabaseField(canBeNull = true, foreign = true, foreignAutoCreate = true,foreignAutoRefresh = true)
     protected Room room;
@@ -15,6 +15,13 @@ public abstract class Guest
 
     @DatabaseField
     protected boolean present;
+
+    @DatabaseField(foreign = true)
+    protected CoupleGuest couple;
+
+    protected Guest()
+    {
+    }
 
     public Room getRoom()
     {
@@ -44,6 +51,16 @@ public abstract class Guest
     public void setPresent(boolean present)
     {
         this.present = present;
+    }
+
+    public CoupleGuest getCouple()
+    {
+        return couple;
+    }
+
+    public void setCouple(CoupleGuest couple)
+    {
+        this.couple = couple;
     }
 
     @Override

@@ -1,9 +1,22 @@
 package com.vincent_kelleher.party_manager.entities;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
+@DatabaseTable(tableName = "room")
 public class Room
 {
+    @DatabaseField(generatedId = true)
+    private int id;
+
+    @DatabaseField
     private String name;
-    private int[][] position;
+
+    @DatabaseField
+    private int positionX;
+
+    @DatabaseField
+    private int positionY;
 
     public String getName()
     {
@@ -15,13 +28,23 @@ public class Room
         this.name = name;
     }
 
-    public int[][] getPosition()
+    public int getPositionX()
     {
-        return position;
+        return positionX;
     }
 
-    public void setPosition(int[][] position)
+    public void setPositionX(int positionX)
     {
-        this.position = position;
+        this.positionX = positionX;
+    }
+
+    public int getPositionY()
+    {
+        return positionY;
+    }
+
+    public void setPositionY(int positionY)
+    {
+        this.positionY = positionY;
     }
 }

@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,15 +16,17 @@ import com.j256.ormlite.dao.Dao;
 import com.vincent_kelleher.party_manager.entities.Guest;
 import com.vincent_kelleher.party_manager.entities.IndividualGuest;
 import com.vincent_kelleher.party_manager.sqlite.DAOFactory;
+import com.vincent_kelleher.party_manager.sqlite.GuestFixture;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GuestListFragment extends Fragment
 {
-    private Dao<IndividualGuest, Integer> guestDao = DAOFactory.getIndividualGuestDao();
+    private Dao<IndividualGuest, Integer> guestDao;
     private GuestListAdapter guestListAdapter;
-    private final List<Guest> guests = new ArrayList<Guest>();
+    private List<IndividualGuest> guests = new ArrayList<IndividualGuest>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -32,20 +35,10 @@ public class GuestListFragment extends Fragment
 
         EditText guestSearch = (EditText) view.findViewById(R.id.guest_search);
         ListView guestList = (ListView) view.findViewById(R.id.guest_list);
-        TextView guestStatisticsTotal = (TextView) view.findViewById(R.id.guest_statistics_total);
-        TextView guestStatisticsPresent = (TextView) view.findViewById(R.id.guest_statistics_present);
-        TextView guestStatisticsNotPresent = (TextView) view.findViewById(R.id.guest_statistics_not_present);
 
         guestSearch.addTextChangedListener(new GuestSearchListener());
 
-        guests.add(new IndividualGuest("Vincent", "Kelleher"));
-        guests.get(0).setPhone("06 03 88 68 11");
-
-        guests.add(new IndividualGuest("Fabienne", "Regondaud"));
-        guests.get(1).setPhone("06 92 34 23 01");
-
-        guests.add(new IndividualGuest("Noël", "Kelleher"));
-        guests.get(2).setPhone("06 92 34 23 01");
+        getGuestsFromDatabase();
 
         guestListAdapter = new GuestListAdapter(getActivity(), guests);
         guestList.setAdapter(guestListAdapter);
@@ -54,6 +47,28 @@ public class GuestListFragment extends Fragment
         updateGuestStatistics(view);
 
         return view;
+    }
+
+    private void getGuestsFromDatabase()
+    {
+        guestDao = ((DAOFactory) getActivity().getApplication()).getIndividualGuestDao();
+
+        extractGuests();
+
+        if (guests.size() < 1) {
+            GuestFixture.hydrateDatabase(guestDao);
+            extractGuests();
+        }
+    }
+
+    private void extractGuests()
+    {
+        try {
+            guests = guestDao.queryForAll();
+        } catch (SQLException e) {
+            Log.e("Database", "Erreur d'extraction des Invités : " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public void updateGuestStatistics(View view)

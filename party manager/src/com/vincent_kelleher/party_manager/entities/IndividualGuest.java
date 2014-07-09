@@ -12,6 +12,10 @@ public class IndividualGuest extends Guest
     @DatabaseField
     private String lastname;
 
+    public IndividualGuest()
+    {
+    }
+
     public IndividualGuest(String firstname, String lastname)
     {
         this.firstname = firstname;
