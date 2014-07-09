@@ -3,6 +3,7 @@ package com.example.party_manager.entities;
 public abstract class Guest
 {
     protected Room room;
+    protected String phone;
     protected boolean present;
 
     public Room getRoom()
@@ -13,6 +14,16 @@ public abstract class Guest
     public void setRoom(Room room)
     {
         this.room = room;
+    }
+
+    public String getPhone()
+    {
+        return phone;
+    }
+
+    public void setPhone(String phone)
+    {
+        this.phone = phone;
     }
 
     public boolean isPresent()

@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="horizontal"
+              xmlns:tools="http://schemas.android.com/tools" android:orientation="horizontal"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent">
 
-    <fragment android:layout_width="wrap_content"
+    <fragment android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:name="com.example.party_manager.GuestListFragment"
               android:id="@+id/guest_list_fragment"
-              android:layout_weight="1"/>
+              android:layout_weight="7"
+              tools:layout="@layout/guest_list"/>
 
-    <fragment android:layout_width="wrap_content"
+    <fragment android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:name="com.example.party_manager.GuestDetailsFragment"
               android:id="@+id/guest_details_fragment"
               android:layout_gravity="right"
-              android:layout_weight="3"/>
+              android:layout_weight="4"
+              tools:layout="@layout/guest_details"/>
 
 </LinearLayout>
 

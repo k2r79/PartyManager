@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import com.example.party_manager.entities.Guest;
@@ -31,11 +32,17 @@ public class GuestListFragment extends Fragment
 
         List<Guest> guests = new ArrayList<Guest>();
         guests.add(new IndividualGuest("Vincent", "Kelleher"));
+        guests.get(0).setPhone("06 03 88 68 11");
+
         guests.add(new IndividualGuest("Fabienne", "Regondaud"));
+        guests.get(1).setPhone("06 92 34 23 01");
+
         guests.add(new IndividualGuest("Noël", "Kelleher"));
+        guests.get(2).setPhone("06 92 34 23 01");
 
         guestListAdapter = new GuestListAdapter(getActivity(), guests);
         guestList.setAdapter(guestListAdapter);
+        guestList.setOnItemClickListener(new GuestClickListener());
 
         return view;
     }
@@ -58,6 +65,16 @@ public class GuestListFragment extends Fragment
         public void afterTextChanged(Editable s)
         {
 
+        }
+    }
+
+    private class GuestClickListener implements AdapterView.OnItemClickListener
+    {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+        {
+            GuestDetailsFragment guestDetailsFragment = (GuestDetailsFragment) getFragmentManager().findFragmentById(R.id.guest_details_fragment);
+            guestDetailsFragment.updateGuest((Guest) guestListAdapter.getItem(position));
         }
     }
 }

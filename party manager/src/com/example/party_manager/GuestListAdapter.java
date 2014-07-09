@@ -33,6 +33,12 @@ public class GuestListAdapter extends ArrayAdapter
     }
 
     @Override
+    public Object getItem(int position)
+    {
+        return displayedGuests.get(position);
+    }
+
+    @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
         View view = ((Activity)getContext()).getLayoutInflater().inflate(R.layout.guest_list_row, null);
