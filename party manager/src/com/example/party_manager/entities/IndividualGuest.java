@@ -2,26 +2,38 @@ package com.example.party_manager.entities;
 
 public class IndividualGuest extends Guest
 {
-    private String nom;
-    private String prenom;
+    private String firstname;
+    private String lastname;
 
-    public String getNom()
+    public IndividualGuest(String firstname, String lastname)
     {
-        return nom;
+        this.firstname = firstname;
+        this.lastname = lastname;
     }
 
-    public void setNom(String nom)
+    public String getFirstname()
     {
-        this.nom = nom;
+        return firstname;
     }
 
-    public String getPrenom()
+    public void setFirstname(String firstname)
     {
-        return prenom;
+        this.firstname = firstname;
     }
 
-    public void setPrenom(String prenom)
+    public String getLastname()
     {
-        this.prenom = prenom;
+        return lastname;
+    }
+
+    public void setLastname(String lastname)
+    {
+        this.lastname = lastname;
+    }
+
+    @Override
+    public String toString()
+    {
+        return firstname + " " + lastname;
     }
 }

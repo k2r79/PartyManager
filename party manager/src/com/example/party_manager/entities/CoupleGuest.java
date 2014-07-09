@@ -1,16 +1,35 @@
 package com.example.party_manager.entities;
 
+import java.util.List;
+
 public class CoupleGuest extends Guest
 {
-    private String names;
+    private List<Guest> guests;
 
-    public String getNames()
+    public CoupleGuest(List<Guest> guests)
     {
-        return names;
+        this.guests = guests;
     }
 
-    public void setNames(String names)
+    public List<Guest> getGuests()
     {
-        this.names = names;
+        return guests;
+    }
+
+    public void setGuests(List<Guest> guests)
+    {
+        this.guests = guests;
+    }
+
+    @Override
+    public String toString()
+    {
+        String name = "";
+
+        for (Guest guest : guests) {
+            name += guest.toString() + " ";
+        }
+
+        return name;
     }
 }

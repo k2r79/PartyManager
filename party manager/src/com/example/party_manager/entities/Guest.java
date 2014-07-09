@@ -24,4 +24,10 @@ public abstract class Guest
     {
         this.present = present;
     }
+
+    @Override
+    public String toString()
+    {
+        return null;
+    }
 }
