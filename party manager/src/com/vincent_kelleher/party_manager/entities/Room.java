@@ -1,4 +1,4 @@
-package com.example.party_manager.entities;
+package com.vincent_kelleher.party_manager.entities;
 
 public class Room
 {

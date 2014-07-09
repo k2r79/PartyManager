@@ -1,4 +1,4 @@
-package com.example.party_manager;
+package com.vincent_kelleher.party_manager;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -11,14 +11,17 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import com.example.party_manager.entities.Guest;
-import com.example.party_manager.entities.IndividualGuest;
+import com.j256.ormlite.dao.Dao;
+import com.vincent_kelleher.party_manager.entities.Guest;
+import com.vincent_kelleher.party_manager.entities.IndividualGuest;
+import com.vincent_kelleher.party_manager.sqlite.DAOFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GuestListFragment extends Fragment
 {
+    private Dao<IndividualGuest, Integer> guestDao = DAOFactory.getIndividualGuestDao();
     private GuestListAdapter guestListAdapter;
     private final List<Guest> guests = new ArrayList<Guest>();
 
@@ -43,24 +46,6 @@ public class GuestListFragment extends Fragment
 
         guests.add(new IndividualGuest("Noël", "Kelleher"));
         guests.get(2).setPhone("06 92 34 23 01");
-
-        guests.add(new IndividualGuest("Vincent", "Kelleher"));
-        guests.get(3).setPhone("06 03 88 68 11");
-
-        guests.add(new IndividualGuest("Fabienne", "Regondaud"));
-        guests.get(4).setPhone("06 92 34 23 01");
-
-        guests.add(new IndividualGuest("Noël", "Kelleher"));
-        guests.get(5).setPhone("06 92 34 23 01");
-
-        guests.add(new IndividualGuest("Vincent", "Kelleher"));
-        guests.get(6).setPhone("06 03 88 68 11");
-
-        guests.add(new IndividualGuest("Fabienne", "Regondaud"));
-        guests.get(7).setPhone("06 92 34 23 01");
-
-        guests.add(new IndividualGuest("Noël", "Kelleher"));
-        guests.get(8).setPhone("06 92 34 23 01");
 
         guestListAdapter = new GuestListAdapter(getActivity(), guests);
         guestList.setAdapter(guestListAdapter);

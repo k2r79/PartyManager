@@ -1,4 +1,4 @@
-package com.example.party_manager;
+package com.vincent_kelleher.party_manager;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.example.party_manager.entities.Guest;
+import com.vincent_kelleher.party_manager.entities.Guest;
 
 import java.util.ArrayList;
 import java.util.List;

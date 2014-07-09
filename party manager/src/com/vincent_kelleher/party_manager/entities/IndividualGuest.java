@@ -1,8 +1,15 @@
-package com.example.party_manager.entities;
+package com.vincent_kelleher.party_manager.entities;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+
+@DatabaseTable(tableName = "individual_guest")
 public class IndividualGuest extends Guest
 {
+    @DatabaseField
     private String firstname;
+
+    @DatabaseField
     private String lastname;
 
     public IndividualGuest(String firstname, String lastname)

@@ -1,4 +1,4 @@
-package com.example.party_manager;
+package com.vincent_kelleher.party_manager;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
-import com.example.party_manager.entities.Guest;
+import com.vincent_kelleher.party_manager.entities.Guest;
 
 public class GuestDetailsFragment extends Fragment
 {

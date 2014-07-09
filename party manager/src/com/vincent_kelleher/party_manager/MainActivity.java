@@ -1,4 +1,4 @@
-package com.example.party_manager;
+package com.vincent_kelleher.party_manager;
 
 import android.app.Activity;
 import android.os.Bundle;

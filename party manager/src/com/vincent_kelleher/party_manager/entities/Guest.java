@@ -1,9 +1,19 @@
-package com.example.party_manager.entities;
+package com.vincent_kelleher.party_manager.entities;
+
+import com.j256.ormlite.field.DatabaseField;
 
 public abstract class Guest
 {
+    @DatabaseField(id = true, generatedId = false)
+    protected int id;
+
+    @DatabaseField(canBeNull = true, foreign = true, foreignAutoCreate = true,foreignAutoRefresh = true)
     protected Room room;
+
+    @DatabaseField
     protected String phone;
+
+    @DatabaseField
     protected boolean present;
 
     public Room getRoom()

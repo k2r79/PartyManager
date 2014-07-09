@@ -1,9 +1,12 @@
-package com.example.party_manager.entities;
+package com.vincent_kelleher.party_manager.entities;
+
+import com.j256.ormlite.field.DatabaseField;
 
 import java.util.List;
 
 public class CoupleGuest extends Guest
 {
+    @DatabaseField(canBeNull = false, foreign = true, foreignAutoCreate = true, foreignAutoRefresh = true)
     private List<Guest> guests;
 
     public CoupleGuest(List<Guest> guests)
