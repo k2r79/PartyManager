@@ -12,6 +12,8 @@ public class MainActivity extends Activity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        setTitle("Party Manager");
         setContentView(R.layout.main);
     }
 }
