@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">party manager</string>
+    <string name="app_name">Party Manager</string>
     <string name="recherche">Recherche...</string>
+    <string name="present">Présent</string>
+    <string name="telephone">Téléphone</string>
 </resources>

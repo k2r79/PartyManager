@@ -22,13 +22,31 @@
             android:layout_toRightOf="@id/guest_details_image"/>
 
     <TextView
+            android:id="@+id/guest_details_divider_phone"
+            style="?android:attr/listSeparatorTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/telephone"
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/guest_details_image"
+            android:layout_alignLeft="@id/guest_details_image"/>
+
+    <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/guest_details_phone"
-            android:layout_marginLeft="55dp"
+            android:layout_margin="10dp"
             android:textSize="20dp"
             android:textColor="#666666"
             android:layout_gravity="center_horizontal"
-            android:layout_below="@id/guest_details_name"
-            android:layout_toRightOf="@id/guest_details_image"/>
+            android:layout_below="@id/guest_details_divider_phone"
+            android:layout_alignLeft="@id/guest_details_divider_phone"/>
+    <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/present"
+            android:id="@+id/guest_details_present"
+            android:layout_alignBottom="@id/guest_details_image"
+            android:layout_alignLeft="@id/guest_details_name"/>
+
 </RelativeLayout>

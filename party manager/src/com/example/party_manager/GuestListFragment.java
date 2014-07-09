@@ -66,11 +66,24 @@ public class GuestListFragment extends Fragment
         guestList.setAdapter(guestListAdapter);
         guestList.setOnItemClickListener(new GuestClickListener());
 
+        updateGuestStatistics(view);
+
+        return view;
+    }
+
+    public void updateGuestStatistics(View view)
+    {
+        if (view == null) {
+            view = getView();
+        }
+
+        TextView guestStatisticsTotal = (TextView) view.findViewById(R.id.guest_statistics_total);
+        TextView guestStatisticsPresent = (TextView) view.findViewById(R.id.guest_statistics_present);
+        TextView guestStatisticsNotPresent = (TextView) view.findViewById(R.id.guest_statistics_not_present);
+
         guestStatisticsTotal.setText("Invités : " + guests.size());
         guestStatisticsPresent.setText("Présents : " + getPresentGuests());
         guestStatisticsNotPresent.setText("Restant : " + (guests.size() - getPresentGuests()));
-
-        return view;
     }
 
     private int getPresentGuests()
