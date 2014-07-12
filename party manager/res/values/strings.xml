@@ -5,4 +5,5 @@
     <string name="present">Présent</string>
     <string name="telephone">Téléphone</string>
     <string name="effectif">Effectif</string>
+    <string name="chambre">Chambre</string>
 </resources>
