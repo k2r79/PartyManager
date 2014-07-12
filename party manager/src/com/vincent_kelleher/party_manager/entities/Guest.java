@@ -1,26 +1,53 @@
 package com.vincent_kelleher.party_manager.entities;
 
 import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
-public abstract class Guest
+@DatabaseTable(tableName = "guest")
+public class Guest
 {
     @DatabaseField(generatedId = true)
     private int id;
 
+    @DatabaseField
+    private String name;
+
     @DatabaseField(canBeNull = true, foreign = true, foreignAutoCreate = true,foreignAutoRefresh = true)
-    protected Room room;
+    private Room room;
 
     @DatabaseField
-    protected String phone;
+    private String phone;
 
     @DatabaseField
-    protected boolean present;
+    private int headcount;
 
-    @DatabaseField(foreign = true)
-    protected CoupleGuest couple;
+    @DatabaseField
+    private boolean present;
 
-    protected Guest()
+    private Guest()
     {
+    }
+
+    public Guest(String name)
+    {
+        this.name = name;
+        this.headcount = 1;
+    }
+
+    public Guest(String name, int headcount)
+    {
+        this.name = name;
+        this.headcount = headcount;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
     }
 
     public Room getRoom()
@@ -43,6 +70,16 @@ public abstract class Guest
         this.phone = phone;
     }
 
+    public int getHeadcount()
+    {
+        return headcount;
+    }
+
+    public void setHeadcount(int headcount)
+    {
+        this.headcount = headcount;
+    }
+
     public boolean isPresent()
     {
         return present;
@@ -53,19 +90,9 @@ public abstract class Guest
         this.present = present;
     }
 
-    public CoupleGuest getCouple()
-    {
-        return couple;
-    }
-
-    public void setCouple(CoupleGuest couple)
-    {
-        this.couple = couple;
-    }
-
     @Override
     public String toString()
     {
-        return null;
+        return name;
     }
 }

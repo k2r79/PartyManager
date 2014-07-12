@@ -13,8 +13,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.vincent_kelleher.party_manager.entities.Guest;
-import com.vincent_kelleher.party_manager.entities.IndividualGuest;
 import com.vincent_kelleher.party_manager.sqlite.DAOFactory;
 import com.vincent_kelleher.party_manager.sqlite.GuestFixture;
 
@@ -24,9 +24,9 @@ import java.util.List;
 
 public class GuestListFragment extends Fragment
 {
-    private Dao<IndividualGuest, Integer> guestDao;
+    private Dao<Guest, Integer> guestDao;
     private GuestListAdapter guestListAdapter;
-    private List<IndividualGuest> guests = new ArrayList<IndividualGuest>();
+    private List<Guest> guests = new ArrayList<Guest>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -51,7 +51,7 @@ public class GuestListFragment extends Fragment
 
     private void getGuestsFromDatabase()
     {
-        guestDao = ((DAOFactory) getActivity().getApplication()).getIndividualGuestDao();
+        guestDao = ((DAOFactory) getActivity().getApplication()).getGuestDao();
 
         extractGuests();
 
@@ -81,18 +81,36 @@ public class GuestListFragment extends Fragment
         TextView guestStatisticsPresent = (TextView) view.findViewById(R.id.guest_statistics_present);
         TextView guestStatisticsNotPresent = (TextView) view.findViewById(R.id.guest_statistics_not_present);
 
-        guestStatisticsTotal.setText("Invités : " + guests.size());
-        guestStatisticsPresent.setText("Présents : " + getPresentGuests());
-        guestStatisticsNotPresent.setText("Restant : " + (guests.size() - getPresentGuests()));
+        int totalGuests = getTotalGuests();
+        int presentGuests = getPresentGuests();
+
+        guestStatisticsTotal.setText("Total : " + totalGuests);
+        guestStatisticsPresent.setText("Présents : " + presentGuests);
+        guestStatisticsNotPresent.setText("Restant : " + (totalGuests - presentGuests));
+    }
+
+    private int getTotalGuests()
+    {
+        int number = 0;
+        try {
+            QueryBuilder<Guest, Integer> query = guestDao.queryBuilder().selectRaw("SUM(headcount)");
+            number = (int) guestDao.queryRawValue(query.prepareStatementString());
+        } catch (SQLException e) {
+            Log.e("Database", "Error getting Guest count : " + e.getMessage());
+        }
+
+        return number;
     }
 
     private int getPresentGuests()
     {
         int number = 0;
-        for (Guest guest : guests) {
-            if (guest.isPresent()) {
-                number++;
-            }
+        try {
+            QueryBuilder<Guest, Integer> query = guestDao.queryBuilder().selectRaw("SUM(headcount)");
+            query.where().eq("present", true);
+            number = (int) guestDao.queryRawValue(query.prepareStatementString());
+        } catch (SQLException e) {
+            Log.e("Database", "Error getting Guest count : " + e.getMessage());
         }
 
         return number;

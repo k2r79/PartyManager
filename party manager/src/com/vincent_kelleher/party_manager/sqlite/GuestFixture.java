@@ -2,45 +2,35 @@ package com.vincent_kelleher.party_manager.sqlite;
 
 import android.util.Log;
 import com.j256.ormlite.dao.Dao;
-import com.vincent_kelleher.party_manager.entities.IndividualGuest;
+import com.vincent_kelleher.party_manager.entities.Guest;
 
 import java.sql.SQLException;
 
 public class GuestFixture
 {
-    public static void hydrateDatabase(Dao<IndividualGuest, Integer> guestDao)
+    public static void hydrateDatabase(Dao<Guest, Integer> guestDao)
     {
         try {
-            guestDao.create(new IndividualGuest("Jean", "Regondaud"));
-            guestDao.create(new IndividualGuest("Pierrette", "Regondaud"));
-            guestDao.create(new IndividualGuest("Geneviève", "Cassiède-Berjon"));
-            guestDao.create(new IndividualGuest("Jean-Claude", "Cassiède-Berjon"));
-            guestDao.create(new IndividualGuest("Colette", "Berjon"));
-            guestDao.create(new IndividualGuest("Patrick", "Kelleher"));
-            guestDao.create(new IndividualGuest("Mandy", "Kelleher"));
-            guestDao.create(new IndividualGuest("Adrian", "Kelleher"));
-            guestDao.create(new IndividualGuest("Karen", "Kelleher"));
-            guestDao.create(new IndividualGuest("Joël", "Rigal"));
-            guestDao.create(new IndividualGuest("Anne", "Pinoit"));
-            guestDao.create(new IndividualGuest("Denis", "Pinoit"));
-            guestDao.create(new IndividualGuest("Chantale", "Laroche"));
-            guestDao.create(new IndividualGuest("Philippe", "Laroche"));
-            guestDao.create(new IndividualGuest("Annie", "Le Toquin"));
-            guestDao.create(new IndividualGuest("Jean-Luc", "Le Toquin"));
-            guestDao.create(new IndividualGuest("Maryse", "O'Brien"));
-            guestDao.create(new IndividualGuest("Victor", "Treguer"));
-            guestDao.create(new IndividualGuest("Françoise", "Treguer"));
-            guestDao.create(new IndividualGuest("Jean-Claude", "Mohand"));
-            guestDao.create(new IndividualGuest("Sandrine", "Mohand"));
-            guestDao.create(new IndividualGuest("Françoise", "Jaubertie"));
-            guestDao.create(new IndividualGuest("François", "Trignol"));
-            guestDao.create(new IndividualGuest("Femme de François", "Trignol"));
-            guestDao.create(new IndividualGuest("", "Delannoy"));
-            guestDao.create(new IndividualGuest("Daniel", "Freygefond"));
-            guestDao.create(new IndividualGuest("Colette", "Freygefond"));
-            guestDao.create(new IndividualGuest("Nathalie", "Joyeux"));
-            guestDao.create(new IndividualGuest("Denis", "Chatain"));
-            guestDao.create(new IndividualGuest("Fabienne", "Chatain"));
+            guestDao.create(new Guest("Parents", 2));
+            guestDao.create(new Guest("Buisson famille", 4));
+            guestDao.create(new Guest("Cassiède-Berjon Gene-JC", 2));
+            guestDao.create(new Guest("Berjon Colette", 1));
+            guestDao.create(new Guest("Paddy-Mandy", 2));
+            guestDao.create(new Guest("Adrian-Karen", 2));
+            guestDao.create(new Guest("Nous + Hélène", 4));
+            guestDao.create(new Guest("Rigal Joël", 1));
+            guestDao.create(new Guest("Pinoit Anne-Denis", 2));
+            guestDao.create(new Guest("Laroche famille", 2));
+            guestDao.create(new Guest("Le Toquin Annie-Jean-Luc", 2));
+            guestDao.create(new Guest("O'Brien Maryse-Anna?", 1));
+            guestDao.create(new Guest("Treguer Victor-Françoise", 2));
+            guestDao.create(new Guest("Mohand famille", 4));
+            guestDao.create(new Guest("Jaubertie", 1));
+            guestDao.create(new Guest("Trignol famille", 3));
+            guestDao.create(new Guest("Delannoy famille", 3));
+            guestDao.create(new Guest("Freygefond Daniel-Colette", 2));
+            guestDao.create(new Guest("Joyeux Nathalie", 1));
+            guestDao.create(new Guest("Châtain Denis-Fabienne", 2));
         } catch (SQLException e) {
             Log.e("Database", "Erreur d'hydratation des Invités : " + e.getMessage());
             e.printStackTrace();
