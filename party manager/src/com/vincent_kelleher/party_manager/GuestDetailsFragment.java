@@ -28,6 +28,7 @@ public class GuestDetailsFragment extends Fragment
     private Guest guest;
     private Dao<Guest, Integer> guestDao;
     private ImageView guestImage;
+    private String guestImagePath;
     private final int scaledImageSize = 140;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
 
@@ -74,20 +75,11 @@ public class GuestDetailsFragment extends Fragment
         guestPresent.setOnCheckedChangeListener(new GuestPresentListener());
     }
 
-    public ImageView getGuestImage()
-    {
-        return guestImage;
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        Log.d("IMAGE", "OK !!! It works !!!");
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-
-            imageBitmap = BitmapUtils.compressImageBitmap(imageBitmap);
+            Bitmap imageBitmap = BitmapUtils.compressImage(guestImagePath, 300, 300);
 
             GuestListFragment guestListFragment = (GuestListFragment) getFragmentManager().findFragmentById(R.id.guest_list_fragment);
 
@@ -123,7 +115,7 @@ public class GuestDetailsFragment extends Fragment
 
         private File takeGuestPhoto()
         {
-            Activity mainActivity = (MainActivity) getActivity();
+            Activity mainActivity = getActivity();
             PackageManager packageManager = mainActivity.getPackageManager();
             File photo = null;
 
@@ -138,7 +130,7 @@ public class GuestDetailsFragment extends Fragment
 
                     if (photo != null) {
                         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photo));
-                        mainActivity.startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
                     }
                 }
             }
@@ -152,6 +144,7 @@ public class GuestDetailsFragment extends Fragment
             File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
             File image = File.createTempFile(imageFileName, ".jpg", storageDir);
 
+            guestImagePath = image.getAbsolutePath();
             Log.d("Image", "Image sauvegardée : " + image.getAbsolutePath());
 
             return image;
