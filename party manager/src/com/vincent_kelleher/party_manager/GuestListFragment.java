@@ -20,6 +20,7 @@ import com.vincent_kelleher.party_manager.sqlite.GuestFixture;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class GuestListFragment extends Fragment
@@ -41,12 +42,25 @@ public class GuestListFragment extends Fragment
         getGuestsFromDatabase();
 
         guestListAdapter = new GuestListAdapter(getActivity(), guests);
+        sortGuestList();
         guestList.setAdapter(guestListAdapter);
         guestList.setOnItemClickListener(new GuestClickListener());
 
         updateGuestStatistics(view);
 
         return view;
+    }
+
+    private void sortGuestList()
+    {
+        guestListAdapter.sort(new Comparator()
+        {
+            @Override
+            public int compare(Object e1, Object e2)
+            {
+                return e1.toString().compareTo(e2.toString());
+            }
+        });
     }
 
     private void getGuestsFromDatabase()
@@ -114,6 +128,11 @@ public class GuestListFragment extends Fragment
         }
 
         return number;
+    }
+
+    public GuestListAdapter getGuestListAdapter()
+    {
+        return guestListAdapter;
     }
 
     private class GuestSearchListener implements TextWatcher

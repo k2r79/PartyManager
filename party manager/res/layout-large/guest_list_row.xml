@@ -10,7 +10,8 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:id="@+id/guest_image"
-            android:src="@drawable/unknown_guest"/>
+            android:src="@drawable/unknown_guest"
+            android:scaleType="centerCrop"/>
 
     <RelativeLayout android:layout_width="match_parent"
                     android:layout_height="match_parent"

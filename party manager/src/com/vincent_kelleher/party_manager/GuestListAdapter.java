@@ -2,12 +2,14 @@ package com.vincent_kelleher.party_manager;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.vincent_kelleher.party_manager.bitmap.BitmapUtils;
 import com.vincent_kelleher.party_manager.entities.Guest;
 
 import java.util.ArrayList;
@@ -17,6 +19,8 @@ public class GuestListAdapter extends ArrayAdapter
 {
     private List<Guest> guests;
     private List<Guest> displayedGuests;
+    private ImageView guestImage;
+    private final int scaledImageSize = 80;
 
     public GuestListAdapter(Context context, List guests)
     {
@@ -43,16 +47,28 @@ public class GuestListAdapter extends ArrayAdapter
     {
         View view = ((Activity)getContext()).getLayoutInflater().inflate(R.layout.guest_list_row, null);
 
-        ImageView guestImage = (ImageView) view.findViewById(R.id.guest_image);
+        guestImage = (ImageView) view.findViewById(R.id.guest_image);
         TextView guestName = (TextView) view.findViewById(R.id.guest_name);
         TextView guestHeadcount = (TextView) view.findViewById(R.id.guest_headcount);
 
         Guest guest = displayedGuests.get(position);
 
+        updateGuestImage(guest);
+
         guestName.setText(guest.toString());
         guestHeadcount.setText(guest.getHeadcount() + " personnes");
 
         return view;
+    }
+
+    public void updateGuestImage(Guest guest)
+    {
+        if (guest.getImagePath() != null) {
+            Bitmap photoBitmap = BitmapUtils.compressImage(guest.getImagePath(), 300, 300);
+            guestImage.setImageBitmap(photoBitmap);
+        } else {
+            guestImage.setImageResource(R.drawable.unknown_guest);
+        }
     }
 
     @Override
@@ -85,5 +101,10 @@ public class GuestListAdapter extends ArrayAdapter
                 notifyDataSetChanged();
             }
         };
+    }
+
+    public ImageView getGuestImage()
+    {
+        return guestImage;
     }
 }

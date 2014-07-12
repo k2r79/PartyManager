@@ -1,10 +1,10 @@
 package com.vincent_kelleher.party_manager;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.j256.ormlite.dao.Dao;
+import com.vincent_kelleher.party_manager.bitmap.BitmapUtils;
 import com.vincent_kelleher.party_manager.entities.Guest;
 import com.vincent_kelleher.party_manager.sqlite.DAOFactory;
 
@@ -26,6 +27,9 @@ public class GuestDetailsFragment extends Fragment
 {
     private Guest guest;
     private Dao<Guest, Integer> guestDao;
+    private ImageView guestImage;
+    private final int scaledImageSize = 140;
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -44,10 +48,10 @@ public class GuestDetailsFragment extends Fragment
 
         getView().setAlpha(1);
 
-        ImageView guestImage = (ImageView) getView().findViewById(R.id.guest_details_image);
+        guestImage = (ImageView) getView().findViewById(R.id.guest_details_image);
         guestImage.setOnClickListener(new GuestImageListener(guest));
         if (guest.getImagePath() != null) {
-            Bitmap photoBitmap = BitmapFactory.decodeFile(guest.getImagePath());
+            Bitmap photoBitmap = BitmapUtils.compressImage(guest.getImagePath(), 300, 300);
             guestImage.setImageBitmap(photoBitmap);
         } else {
             guestImage.setImageResource(R.drawable.unknown_guest);
@@ -70,6 +74,31 @@ public class GuestDetailsFragment extends Fragment
         guestPresent.setOnCheckedChangeListener(new GuestPresentListener());
     }
 
+    public ImageView getGuestImage()
+    {
+        return guestImage;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        Log.d("IMAGE", "OK !!! It works !!!");
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+
+            imageBitmap = BitmapUtils.compressImageBitmap(imageBitmap);
+
+            GuestListFragment guestListFragment = (GuestListFragment) getFragmentManager().findFragmentById(R.id.guest_list_fragment);
+
+            GuestListAdapter guestListAdapter = guestListFragment.getGuestListAdapter();
+            guestListAdapter.getGuestImage().setImageBitmap(imageBitmap);
+            guestListAdapter.notifyDataSetChanged();
+
+            guestImage.setImageBitmap(imageBitmap);
+        }
+    }
+
     private class GuestImageListener implements View.OnClickListener
     {
         private Guest guest;
@@ -90,14 +119,12 @@ public class GuestDetailsFragment extends Fragment
             } catch (SQLException e) {
                 Log.e("Database", "Erreur de mise à jour de l'Invité : " + e.getMessage());
             }
-
-            Bitmap photoBitmap = BitmapFactory.decodeFile(guest.getImagePath());
-            ((ImageView) v).setImageBitmap(photoBitmap);
         }
 
         private File takeGuestPhoto()
         {
-            PackageManager packageManager = getActivity().getPackageManager();
+            Activity mainActivity = (MainActivity) getActivity();
+            PackageManager packageManager = mainActivity.getPackageManager();
             File photo = null;
 
             if (packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
@@ -111,7 +138,7 @@ public class GuestDetailsFragment extends Fragment
 
                     if (photo != null) {
                         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photo));
-                        startActivityForResult(takePictureIntent, 1);
+                        mainActivity.startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
                     }
                 }
             }
