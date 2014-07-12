@@ -10,6 +10,9 @@ public class Guest
     private int id;
 
     @DatabaseField
+    private String imagePath;
+
+    @DatabaseField
     private String name;
 
     @DatabaseField(canBeNull = true, foreign = true, foreignAutoCreate = true,foreignAutoRefresh = true)
@@ -38,6 +41,16 @@ public class Guest
     {
         this.name = name;
         this.headcount = headcount;
+    }
+
+    public String getImagePath()
+    {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath)
+    {
+        this.imagePath = imagePath;
     }
 
     public String getName()

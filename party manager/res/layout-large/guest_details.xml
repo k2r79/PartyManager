@@ -10,7 +10,8 @@
             android:layout_width="140dp"
             android:layout_height="140dp"
             android:id="@+id/guest_details_image"
-            android:src="@drawable/unknown_guest"/>
+            android:src="@drawable/unknown_guest"
+            android:scaleType="fitStart"/>
 
     <TextView
             android:layout_width="match_parent"

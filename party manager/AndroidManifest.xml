@@ -4,6 +4,10 @@
           android:versionCode="1"
           android:versionName="1.0">
     <uses-sdk android:minSdkVersion="14"/>
+    <uses-feature android:name="android.hardware.camera"
+                  android:required="true" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+                     android:maxSdkVersion="18" />
     <application android:label="@string/app_name"
                  android:icon="@drawable/ic_launcher"
                  android:name=".sqlite.DAOFactory">

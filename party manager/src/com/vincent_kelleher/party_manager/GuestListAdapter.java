@@ -45,10 +45,12 @@ public class GuestListAdapter extends ArrayAdapter
 
         ImageView guestImage = (ImageView) view.findViewById(R.id.guest_image);
         TextView guestName = (TextView) view.findViewById(R.id.guest_name);
+        TextView guestHeadcount = (TextView) view.findViewById(R.id.guest_headcount);
 
         Guest guest = displayedGuests.get(position);
 
         guestName.setText(guest.toString());
+        guestHeadcount.setText(guest.getHeadcount() + " personnes");
 
         return view;
     }
