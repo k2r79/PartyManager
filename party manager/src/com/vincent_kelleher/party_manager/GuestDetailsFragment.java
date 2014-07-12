@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,20 +18,25 @@ import android.widget.*;
 import com.j256.ormlite.dao.Dao;
 import com.vincent_kelleher.party_manager.bitmap.BitmapUtils;
 import com.vincent_kelleher.party_manager.entities.Guest;
+import com.vincent_kelleher.party_manager.entities.Room;
 import com.vincent_kelleher.party_manager.sqlite.DAOFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GuestDetailsFragment extends Fragment
 {
     private Guest guest;
+    private List<Room> rooms = new ArrayList<Room>();
     private Dao<Guest, Integer> guestDao;
     private ImageView guestImage;
     private String guestImagePath;
-    private final int scaledImageSize = 140;
+    private static final int SCALED_IMAGE_SIZE = 200;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int NUMBER_OF_ROOMS = 24;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -38,9 +44,37 @@ public class GuestDetailsFragment extends Fragment
         View view = inflater.inflate(R.layout.guest_details, container, false);
         view.setAlpha(0);
 
+        generateRooms(view);
+
         guestDao = ((DAOFactory) getActivity().getApplication()).getGuestDao();
 
         return view;
+    }
+
+    private void generateRooms(View view)
+    {
+        LinearLayout oddRoomContainer = (LinearLayout) view.findViewById(R.id.guest_details_rooms_odd);
+        LinearLayout evenRoomContainer = (LinearLayout) view.findViewById(R.id.guest_details_rooms_even);
+
+        for (int roomIndex = 0; roomIndex < NUMBER_OF_ROOMS; roomIndex++) {
+            FrameLayout roomFrame = new FrameLayout(getActivity());
+            LinearLayout.LayoutParams roomFrameParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1);
+            roomFrame.setLayoutParams(roomFrameParams);
+            roomFrame.setBackgroundResource(R.drawable.border);
+            roomFrame.setPadding(10, 10, 10, 10);
+
+            TextView roomName = new TextView(getActivity());
+            roomName.setText("2" + (roomIndex < 10 ? "0" + roomIndex : roomIndex));
+            roomName.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16.00f);
+
+            roomFrame.addView(roomName);
+
+            if (roomIndex % 2 == 0) {
+                evenRoomContainer.addView(roomFrame);
+            } else {
+                oddRoomContainer.addView(roomFrame);
+            }
+        }
     }
 
     public void updateGuest(Guest guest)
@@ -52,7 +86,7 @@ public class GuestDetailsFragment extends Fragment
         guestImage = (ImageView) getView().findViewById(R.id.guest_details_image);
         guestImage.setOnClickListener(new GuestImageListener(guest));
         if (guest.getImagePath() != null) {
-            Bitmap photoBitmap = BitmapUtils.compressImage(guest.getImagePath(), 300, 300);
+            Bitmap photoBitmap = BitmapUtils.compressImage(guest.getImagePath(), SCALED_IMAGE_SIZE, SCALED_IMAGE_SIZE);
             guestImage.setImageBitmap(photoBitmap);
         } else {
             guestImage.setImageResource(R.drawable.unknown_guest);
@@ -79,7 +113,7 @@ public class GuestDetailsFragment extends Fragment
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            Bitmap imageBitmap = BitmapUtils.compressImage(guestImagePath, 300, 300);
+            Bitmap imageBitmap = BitmapUtils.compressImage(guestImagePath, SCALED_IMAGE_SIZE, SCALED_IMAGE_SIZE);
 
             GuestListFragment guestListFragment = (GuestListFragment) getFragmentManager().findFragmentById(R.id.guest_list_fragment);
 

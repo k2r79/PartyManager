@@ -88,4 +88,36 @@
             android:layout_below="@id/guest_details_headcount_value"
             android:layout_alignLeft="@id/guest_details_image"/>
 
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_below="@+id/guest_details_divider_room"
+                  android:layout_alignLeft="@id/guest_details_image"
+                  android:layout_margin="10dp"
+                  android:layout_marginTop="30dp"
+                  android:orientation="vertical">
+
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="70dp"
+                          android:id="@+id/guest_details_rooms_odd"
+                          android:orientation="horizontal"
+                          android:background="@drawable/border">
+
+            </LinearLayout>
+
+            <FrameLayout android:layout_width="match_parent"
+                         android:layout_height="30dp"
+                         android:background="@drawable/border">
+
+            </FrameLayout>
+
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="70dp"
+                          android:id="@+id/guest_details_rooms_even"
+                          android:orientation="horizontal"
+                          android:background="@drawable/border">
+
+            </LinearLayout>
+
+    </LinearLayout>
+
 </RelativeLayout>

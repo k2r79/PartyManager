@@ -12,11 +12,14 @@ public class Room
     @DatabaseField
     private String name;
 
-    @DatabaseField
-    private int positionX;
+    public Room()
+    {
+    }
 
-    @DatabaseField
-    private int positionY;
+    public Room(String name)
+    {
+        this.name = name;
+    }
 
     public String getName()
     {
@@ -26,25 +29,5 @@ public class Room
     public void setName(String name)
     {
         this.name = name;
-    }
-
-    public int getPositionX()
-    {
-        return positionX;
-    }
-
-    public void setPositionX(int positionX)
-    {
-        this.positionX = positionX;
-    }
-
-    public int getPositionY()
-    {
-        return positionY;
-    }
-
-    public void setPositionY(int positionY)
-    {
-        this.positionY = positionY;
     }
 }
