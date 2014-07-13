@@ -7,6 +7,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.SearchView;
 
@@ -39,6 +40,25 @@ public class MainActivity extends Activity
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId()) {
+            case R.id.action_show_only_not_present:
+                if (item.isChecked()) {
+                    getGuestListFragment().getGuestListAdapter().undoFilter();
+                } else {
+                    getGuestListFragment().getGuestListAdapter().getNotPresentFilter().filter(null);
+                }
+
+                item.setChecked(!item.isChecked());
+
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     private class SearchListener implements SearchView.OnQueryTextListener
     {
         @Override
@@ -50,10 +70,15 @@ public class MainActivity extends Activity
         @Override
         public boolean onQueryTextChange(String searchString)
         {
-            GuestListFragment guestListFragment = (GuestListFragment) getFragmentManager().findFragmentById(R.id.guest_list_fragment);
+            GuestListFragment guestListFragment = getGuestListFragment();
             guestListFragment.getGuestListAdapter().getFilter().filter(searchString);
 
             return true;
         }
+    }
+
+    private GuestListFragment getGuestListFragment()
+    {
+        return (GuestListFragment) getFragmentManager().findFragmentById(R.id.guest_list_fragment);
     }
 }

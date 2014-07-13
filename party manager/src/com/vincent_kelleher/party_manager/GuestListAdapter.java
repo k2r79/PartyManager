@@ -109,6 +109,43 @@ public class GuestListAdapter extends ArrayAdapter
         };
     }
 
+    public Filter getNotPresentFilter()
+    {
+        return new Filter()
+        {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint)
+            {
+                FilterResults filterResults = new FilterResults();
+                List<Guest> filteredArrayList = new ArrayList<Guest>();
+
+                for (Guest guest : guests) {
+                    if (!guest.isPresent()) {
+                        filteredArrayList.add(guest);
+                    }
+                }
+
+                filterResults.count = filteredArrayList.size();
+                filterResults.values = filteredArrayList;
+
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results)
+            {
+                displayedGuests = (ArrayList<Guest>) results.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
+
+    public void undoFilter()
+    {
+        displayedGuests = guests;
+        notifyDataSetChanged();
+    }
+
     public ImageView getGuestImage()
     {
         return guestImage;
