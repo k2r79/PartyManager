@@ -4,11 +4,12 @@
               android:orientation="horizontal"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:padding="10dp">
+              android:padding="10dp"
+              android:background="@drawable/guest_state">
 
-    <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+    <com.vincent_kelleher.party_manager.bitmap.RoundedImageView
+            android:layout_width="90dp"
+            android:layout_height="90dp"
             android:id="@+id/guest_image"
             android:src="@drawable/unknown_guest"
             android:scaleType="centerCrop"/>

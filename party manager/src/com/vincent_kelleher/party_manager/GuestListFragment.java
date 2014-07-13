@@ -161,6 +161,8 @@ public class GuestListFragment extends Fragment
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id)
         {
+            view.setSelected(true);
+
             GuestDetailsFragment guestDetailsFragment = (GuestDetailsFragment) getFragmentManager().findFragmentById(R.id.guest_details_fragment);
             guestDetailsFragment.updateGuest((Guest) guestListAdapter.getItem(position));
         }

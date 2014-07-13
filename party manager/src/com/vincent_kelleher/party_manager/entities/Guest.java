@@ -39,8 +39,14 @@ public class Guest
 
     public Guest(String name, int headcount)
     {
-        this.name = name;
+        this(name);
         this.headcount = headcount;
+    }
+
+    public Guest(String name, int headcount, Room room)
+    {
+        this(name, headcount);
+        this.room = room;
     }
 
     public String getImagePath()

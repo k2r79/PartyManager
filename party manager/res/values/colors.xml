@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="guest_selected">#2279b7cc</color>
+    <color name="guest_default">@android:color/transparent</color>
+</resources>

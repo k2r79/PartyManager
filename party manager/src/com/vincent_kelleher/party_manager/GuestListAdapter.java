@@ -55,6 +55,12 @@ public class GuestListAdapter extends ArrayAdapter
 
         updateGuestImage(guest);
 
+        if (guest.isPresent()) {
+            view.setBackgroundColor(getContext().getResources().getColor(R.color.guest_selected));
+        } else {
+            view.setBackgroundColor(getContext().getResources().getColor(R.color.guest_default));
+        }
+
         guestName.setText(guest.toString());
         guestHeadcount.setText(guest.getHeadcount() + " personnes");
 

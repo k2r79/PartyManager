@@ -18,7 +18,6 @@ import android.widget.*;
 import com.j256.ormlite.dao.Dao;
 import com.vincent_kelleher.party_manager.bitmap.BitmapUtils;
 import com.vincent_kelleher.party_manager.entities.Guest;
-import com.vincent_kelleher.party_manager.entities.Room;
 import com.vincent_kelleher.party_manager.sqlite.DAOFactory;
 
 import java.io.File;
@@ -30,13 +29,14 @@ import java.util.List;
 public class GuestDetailsFragment extends Fragment
 {
     private Guest guest;
-    private List<Room> rooms = new ArrayList<Room>();
+    private List<FrameLayout> roomFrames = new ArrayList<FrameLayout>();
     private Dao<Guest, Integer> guestDao;
     private ImageView guestImage;
     private String guestImagePath;
     private static final int SCALED_IMAGE_SIZE = 200;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int NUMBER_OF_ROOMS = 24;
+    private static final int ROOM_FRAME_PADDING = 10;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -68,6 +68,7 @@ public class GuestDetailsFragment extends Fragment
             roomName.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16.00f);
 
             roomFrame.addView(roomName);
+            roomFrames.add(roomFrame);
 
             if (roomIndex % 2 == 0) {
                 evenRoomContainer.addView(roomFrame);
@@ -100,13 +101,31 @@ public class GuestDetailsFragment extends Fragment
 
         guestName.setText(guest.toString());
         guestPhone.setText(guest.getPhone());
+
         guestPresent.setChecked(guest.isPresent());
+        guestPresent.setOnCheckedChangeListener(new GuestPresentListener());
 
         guestHeadcount.setProgress(guest.getHeadcount() * 10);
         guestHeadcount.setOnSeekBarChangeListener(new GuestHeadcountListener());
         guestHeadcountValue.setText(String.valueOf(guest.getHeadcount()) + " personnes");
 
-        guestPresent.setOnCheckedChangeListener(new GuestPresentListener());
+        indicateGuestRoom(guest);
+    }
+
+    private void indicateGuestRoom(Guest guest)
+    {
+        for (FrameLayout roomFrame : roomFrames) {
+            roomFrame.setBackgroundResource(R.drawable.border);
+            roomFrame.setPadding(ROOM_FRAME_PADDING, ROOM_FRAME_PADDING, ROOM_FRAME_PADDING, ROOM_FRAME_PADDING);
+        }
+
+        if (guest.getRoom() != null) {
+            char[] roomNameExploded = guest.getRoom().getName().toCharArray();
+            String roomNumber = String.valueOf(roomNameExploded[1]) + String.valueOf(roomNameExploded[2]);
+            FrameLayout guestRoom = roomFrames.get(Integer.valueOf(roomNumber));
+            guestRoom.setBackgroundResource(R.drawable.border_green);
+            guestRoom.setPadding(ROOM_FRAME_PADDING, ROOM_FRAME_PADDING, ROOM_FRAME_PADDING, ROOM_FRAME_PADDING);
+        }
     }
 
     @Override
@@ -199,7 +218,7 @@ public class GuestDetailsFragment extends Fragment
                 e.printStackTrace();
             }
 
-            updateGuestStatistics();
+            updateGuestStatisticsAndList();
         }
     }
 
@@ -234,14 +253,15 @@ public class GuestDetailsFragment extends Fragment
                 e.printStackTrace();
             }
 
-            updateGuestStatistics();
+            updateGuestStatisticsAndList();
         }
 
     }
 
-    private void updateGuestStatistics()
+    private void updateGuestStatisticsAndList()
     {
         GuestListFragment guestListFragment = (GuestListFragment) getFragmentManager().findFragmentById(R.id.guest_list_fragment);
         guestListFragment.updateGuestStatistics(null);
+        guestListFragment.getGuestListAdapter().notifyDataSetChanged();
     }
 }
