@@ -6,4 +6,6 @@
     <string name="telephone">Téléphone</string>
     <string name="effectif">Effectif</string>
     <string name="chambre">Chambre</string>
+    <string name="rechercher">Rechercher...</string>
+    <string name="afficher_invites_restants">Afficher les invités restants</string>
 </resources>

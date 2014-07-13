@@ -6,15 +6,6 @@
               android:layout_height="match_parent"
               android:background="@drawable/shadow_background_right">
 
-
-    <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/guest_search"
-            android:textSize="24dp"
-            android:hint="@string/recherche"
-            android:layout_gravity="center_horizontal"/>
-
     <ListView
             android:layout_width="match_parent"
             android:layout_height="0dp"
