@@ -23,19 +23,20 @@ import com.vincent_kelleher.party_manager.sqlite.DAOFactory;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GuestDetailsFragment extends Fragment
 {
     private Guest guest;
-    private List<FrameLayout> roomFrames = new ArrayList<FrameLayout>();
+    private Map<Integer, FrameLayout> roomFrames = new HashMap<Integer, FrameLayout>();
     private Dao<Guest, Integer> guestDao;
     private ImageView guestImage;
     private String guestImagePath;
     private static final int SCALED_IMAGE_SIZE = 200;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
-    private static final int NUMBER_OF_ROOMS = 24;
+    private static final int NUMBER_OF_ODD_ROOMS = 14;
+    private static final int NUMBER_OF_EVEN_ROOMS = 7;
     private static final int ROOM_FRAME_PADDING = 10;
 
     @Override
@@ -56,26 +57,60 @@ public class GuestDetailsFragment extends Fragment
         LinearLayout oddRoomContainer = (LinearLayout) view.findViewById(R.id.guest_details_rooms_odd);
         LinearLayout evenRoomContainer = (LinearLayout) view.findViewById(R.id.guest_details_rooms_even);
 
-        for (int roomIndex = 0; roomIndex < NUMBER_OF_ROOMS; roomIndex++) {
-            FrameLayout roomFrame = new FrameLayout(getActivity());
-            LinearLayout.LayoutParams roomFrameParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1);
-            roomFrame.setLayoutParams(roomFrameParams);
-            roomFrame.setBackgroundResource(R.drawable.border);
-            roomFrame.setPadding(10, 10, 10, 10);
+        for (int roomIndex = 0; roomIndex < NUMBER_OF_ODD_ROOMS * 2; roomIndex += 2) {
+            int roomNumber = roomIndex + 1;
+            FrameLayout roomFrame = createEmptyRoom();
 
             TextView roomName = new TextView(getActivity());
-            roomName.setText("2" + (roomIndex < 10 ? "0" + roomIndex : roomIndex));
+            roomName.setText("2" + (roomNumber < 10 ? "0" + roomNumber : roomNumber));
             roomName.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16.00f);
 
             roomFrame.addView(roomName);
-            roomFrames.add(roomFrame);
+            roomFrames.put(roomNumber, roomFrame);
 
-            if (roomIndex % 2 == 0) {
-                evenRoomContainer.addView(roomFrame);
-            } else {
-                oddRoomContainer.addView(roomFrame);
+            oddRoomContainer.addView(roomFrame);
+        }
+
+        for (int roomIndex = 0; roomIndex < NUMBER_OF_EVEN_ROOMS * 2; roomIndex += 2) {
+            int roomNumber = roomIndex + 2;
+            FrameLayout roomFrame = createEmptyRoom();
+
+            TextView roomName = new TextView(getActivity());
+            roomName.setText("2" + (roomNumber < 10 ? "0" + roomNumber : roomNumber));
+            roomName.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16.00f);
+
+            roomFrame.addView(roomName);
+            roomFrames.put(roomNumber, roomFrame);
+
+            switch (roomNumber) {
+                case 2:
+                    evenRoomContainer.addView(createEmptyRoom());
+                    evenRoomContainer.addView(createEmptyRoom());
+                    evenRoomContainer.addView(createEmptyRoom());
+                break;
+                case 12:
+                    evenRoomContainer.addView(createEmptyRoom());
+                    evenRoomContainer.addView(createEmptyRoom());
+                break;
+            }
+
+            evenRoomContainer.addView(roomFrame);
+
+            if (roomNumber == 14) {
+                evenRoomContainer.addView(createEmptyRoom());
             }
         }
+    }
+
+    private FrameLayout createEmptyRoom()
+    {
+        FrameLayout roomFrame = new FrameLayout(getActivity());
+        LinearLayout.LayoutParams roomFrameParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1);
+        roomFrame.setLayoutParams(roomFrameParams);
+        roomFrame.setBackgroundResource(R.drawable.border);
+        roomFrame.setPadding(10, 10, 10, 10);
+
+        return roomFrame;
     }
 
     public void updateGuest(Guest guest)
@@ -114,7 +149,7 @@ public class GuestDetailsFragment extends Fragment
 
     private void indicateGuestRoom(Guest guest)
     {
-        for (FrameLayout roomFrame : roomFrames) {
+        for (FrameLayout roomFrame : roomFrames.values()) {
             roomFrame.setBackgroundResource(R.drawable.border);
             roomFrame.setPadding(ROOM_FRAME_PADDING, ROOM_FRAME_PADDING, ROOM_FRAME_PADDING, ROOM_FRAME_PADDING);
         }
@@ -123,7 +158,7 @@ public class GuestDetailsFragment extends Fragment
             char[] roomNameExploded = guest.getRoom().getName().toCharArray();
             String roomNumber = String.valueOf(roomNameExploded[1]) + String.valueOf(roomNameExploded[2]);
             FrameLayout guestRoom = roomFrames.get(Integer.valueOf(roomNumber));
-            guestRoom.setBackgroundResource(R.drawable.border_green);
+            guestRoom.setBackgroundResource(R.drawable.background_green);
             guestRoom.setPadding(ROOM_FRAME_PADDING, ROOM_FRAME_PADDING, ROOM_FRAME_PADDING, ROOM_FRAME_PADDING);
         }
     }
