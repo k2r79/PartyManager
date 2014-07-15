@@ -32,7 +32,7 @@ public class GuestFixture
             guestDao.create(new Guest("Freygefond Daniel Colette", 2, new Room("215")));
             guestDao.create(new Guest("Joyeux Nathalie", 1, new Room("202")));
             guestDao.create(new Guest("Châtain Denis Fabienne", 2, new Room("223")));
-            guestDao.create(new Guest("Filles Florence", 3, new Room("210")));
+            guestDao.create(new Guest("Cousines Adoptives", 3, new Room("201")));
         } catch (SQLException e) {
             Log.e("Database", "Erreur d'hydratation des Invités : " + e.getMessage());
             e.printStackTrace();

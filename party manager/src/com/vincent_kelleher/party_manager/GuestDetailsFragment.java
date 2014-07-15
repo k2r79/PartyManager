@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,7 @@ import com.j256.ormlite.dao.Dao;
 import com.vincent_kelleher.party_manager.bitmap.BitmapUtils;
 import com.vincent_kelleher.party_manager.entities.Guest;
 import com.vincent_kelleher.party_manager.sqlite.DAOFactory;
+import com.vincent_kelleher.party_manager.utilities.RoomManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,9 +35,6 @@ public class GuestDetailsFragment extends Fragment
     private String guestImagePath;
     private static final int SCALED_IMAGE_SIZE = 200;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
-    private static final int NUMBER_OF_ODD_ROOMS = 14;
-    private static final int NUMBER_OF_EVEN_ROOMS = 7;
-    private static final int ROOM_FRAME_PADDING = 10;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -57,60 +54,7 @@ public class GuestDetailsFragment extends Fragment
         LinearLayout oddRoomContainer = (LinearLayout) view.findViewById(R.id.guest_details_rooms_odd);
         LinearLayout evenRoomContainer = (LinearLayout) view.findViewById(R.id.guest_details_rooms_even);
 
-        for (int roomIndex = 0; roomIndex < NUMBER_OF_ODD_ROOMS * 2; roomIndex += 2) {
-            int roomNumber = roomIndex + 1;
-            FrameLayout roomFrame = createEmptyRoom();
-
-            TextView roomName = new TextView(getActivity());
-            roomName.setText("2" + (roomNumber < 10 ? "0" + roomNumber : roomNumber));
-            roomName.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16.00f);
-
-            roomFrame.addView(roomName);
-            roomFrames.put(roomNumber, roomFrame);
-
-            oddRoomContainer.addView(roomFrame);
-        }
-
-        for (int roomIndex = 0; roomIndex < NUMBER_OF_EVEN_ROOMS * 2; roomIndex += 2) {
-            int roomNumber = roomIndex + 2;
-            FrameLayout roomFrame = createEmptyRoom();
-
-            TextView roomName = new TextView(getActivity());
-            roomName.setText("2" + (roomNumber < 10 ? "0" + roomNumber : roomNumber));
-            roomName.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16.00f);
-
-            roomFrame.addView(roomName);
-            roomFrames.put(roomNumber, roomFrame);
-
-            switch (roomNumber) {
-                case 2:
-                    evenRoomContainer.addView(createEmptyRoom());
-                    evenRoomContainer.addView(createEmptyRoom());
-                    evenRoomContainer.addView(createEmptyRoom());
-                break;
-                case 12:
-                    evenRoomContainer.addView(createEmptyRoom());
-                    evenRoomContainer.addView(createEmptyRoom());
-                break;
-            }
-
-            evenRoomContainer.addView(roomFrame);
-
-            if (roomNumber == 14) {
-                evenRoomContainer.addView(createEmptyRoom());
-            }
-        }
-    }
-
-    private FrameLayout createEmptyRoom()
-    {
-        FrameLayout roomFrame = new FrameLayout(getActivity());
-        LinearLayout.LayoutParams roomFrameParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1);
-        roomFrame.setLayoutParams(roomFrameParams);
-        roomFrame.setBackgroundResource(R.drawable.border);
-        roomFrame.setPadding(10, 10, 10, 10);
-
-        return roomFrame;
+        roomFrames = RoomManager.generateRooms(getActivity(), oddRoomContainer, evenRoomContainer);
     }
 
     public void updateGuest(Guest guest)
@@ -144,23 +88,7 @@ public class GuestDetailsFragment extends Fragment
         guestHeadcount.setOnSeekBarChangeListener(new GuestHeadcountListener());
         guestHeadcountValue.setText(String.valueOf(guest.getHeadcount()) + " personnes");
 
-        indicateGuestRoom(guest);
-    }
-
-    private void indicateGuestRoom(Guest guest)
-    {
-        for (FrameLayout roomFrame : roomFrames.values()) {
-            roomFrame.setBackgroundResource(R.drawable.border);
-            roomFrame.setPadding(ROOM_FRAME_PADDING, ROOM_FRAME_PADDING, ROOM_FRAME_PADDING, ROOM_FRAME_PADDING);
-        }
-
-        if (guest.getRoom() != null) {
-            char[] roomNameExploded = guest.getRoom().getName().toCharArray();
-            String roomNumber = String.valueOf(roomNameExploded[1]) + String.valueOf(roomNameExploded[2]);
-            FrameLayout guestRoom = roomFrames.get(Integer.valueOf(roomNumber));
-            guestRoom.setBackgroundResource(R.drawable.background_green);
-            guestRoom.setPadding(ROOM_FRAME_PADDING, ROOM_FRAME_PADDING, ROOM_FRAME_PADDING, ROOM_FRAME_PADDING);
-        }
+        RoomManager.indicateGuestRoom(guest, roomFrames);
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -52,6 +53,12 @@ public class MainActivity extends Activity
                 }
 
                 item.setChecked(!item.isChecked());
+
+                return true;
+
+            case R.id.action_show_rooms:
+                Intent roomsIntent = new Intent(this, RoomActivity.class);
+                startActivity(roomsIntent);
 
                 return true;
         }
