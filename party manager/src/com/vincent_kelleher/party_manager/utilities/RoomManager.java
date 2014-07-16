@@ -7,7 +7,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.vincent_kelleher.party_manager.R;
-import com.vincent_kelleher.party_manager.entities.Guest;
+import com.vincent_kelleher.party_manager.entities.Room;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -80,15 +80,17 @@ public class RoomManager
         return roomFrame;
     }
 
-    public static void indicateGuestRoom(Guest guest, Map<Integer, FrameLayout> roomFrames)
+    public static void indicateGuestRoom(Room room, Map<Integer, FrameLayout> roomFrames, boolean resetOtherRooms)
     {
-        for (FrameLayout roomFrame : roomFrames.values()) {
-            roomFrame.setBackgroundResource(R.drawable.border);
-            roomFrame.setPadding(ROOM_FRAME_PADDING, ROOM_FRAME_PADDING, ROOM_FRAME_PADDING, ROOM_FRAME_PADDING);
+        if (resetOtherRooms) {
+            for (FrameLayout roomFrame : roomFrames.values()) {
+                roomFrame.setBackgroundResource(R.drawable.border);
+                roomFrame.setPadding(ROOM_FRAME_PADDING, ROOM_FRAME_PADDING, ROOM_FRAME_PADDING, ROOM_FRAME_PADDING);
+            }
         }
 
-        if (guest.getRoom() != null) {
-            char[] roomNameExploded = guest.getRoom().getName().toCharArray();
+        if (room != null) {
+            char[] roomNameExploded = room.getName().toCharArray();
             String roomNumber = String.valueOf(roomNameExploded[1]) + String.valueOf(roomNameExploded[2]);
             FrameLayout guestRoom = roomFrames.get(Integer.valueOf(roomNumber));
             guestRoom.setBackgroundResource(R.drawable.background_green);

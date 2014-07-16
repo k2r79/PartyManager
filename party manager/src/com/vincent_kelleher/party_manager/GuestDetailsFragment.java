@@ -88,7 +88,7 @@ public class GuestDetailsFragment extends Fragment
         guestHeadcount.setOnSeekBarChangeListener(new GuestHeadcountListener());
         guestHeadcountValue.setText(String.valueOf(guest.getHeadcount()) + " personnes");
 
-        RoomManager.indicateGuestRoom(guest, roomFrames);
+        RoomManager.indicateGuestRoom(guest.getRoom(), roomFrames, true);
     }
 
     @Override
