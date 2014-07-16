@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import com.j256.ormlite.dao.Dao;
+import com.vincent_kelleher.party_manager.entities.Guest;
 import com.vincent_kelleher.party_manager.entities.Room;
 import com.vincent_kelleher.party_manager.room.RoomManager;
 import com.vincent_kelleher.party_manager.sqlite.DAOFactory;
@@ -19,6 +20,7 @@ import java.util.Map;
 public class RoomActivity extends Activity
 {
     private Dao<Room, Integer> roomDao;
+    private Dao<Guest, Integer> guestDao;
     private Map<Integer, FrameLayout> roomFrames = new HashMap<Integer, FrameLayout>();
     private List<Room> guestRooms;
 
@@ -31,6 +33,7 @@ public class RoomActivity extends Activity
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
         roomDao = ((DAOFactory) getApplication()).getRoomDao();
+        guestDao = ((DAOFactory) getApplication()).getGuestDao();
 
         setTitle("Party Manager");
         setContentView(R.layout.rooms);
@@ -64,7 +67,6 @@ public class RoomActivity extends Activity
 
         for (Room room : guestRooms) {
             if (room.getGuest() != null) {
-                Log.d("Room", room.getName() + " " + room.getGuest().getName());
                 RoomManager.indicateGuestRoom(room, roomFrames, new GuestRoomClickListener(room), false);
             }
         }
@@ -86,7 +88,7 @@ public class RoomActivity extends Activity
         }
     }
 
-    private void createGuestRoomPopup(View v, Room room)
+    private void createGuestRoomPopup(View v, final Room room)
     {
         LayoutInflater layoutInflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = layoutInflater.inflate(R.layout.guest_room_popup, null);
@@ -99,7 +101,7 @@ public class RoomActivity extends Activity
         TextView roomGuestHeadcount = (TextView) popupView.findViewById(R.id.room_popup_guest_headcount);
 
         roomGuestName.setText(room.getGuest().getName());
-        roomGuestHeadcount.setText(String.valueOf(room.getGuest().getHeadcount()));
+        roomGuestHeadcount.setText(String.valueOf(room.getGuest().getHeadcount()) + " personnes");
 
         Button okButton = (Button) popupView.findViewById(R.id.room_popup_ok);
         okButton.setOnClickListener(new View.OnClickListener()
@@ -107,6 +109,30 @@ public class RoomActivity extends Activity
             @Override
             public void onClick(View v)
             {
+                popupWindow.dismiss();
+            }
+        });
+
+        Button removeFromRoomButton = (Button) popupView.findViewById(R.id.room_popup_remove_from_room);
+        removeFromRoomButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                try {
+                    Guest guest = room.getGuest();
+                    guest.setRoom(null);
+                    guestDao.update(guest);
+
+                    room.setGuest(null);
+                    roomDao.update(room);
+                } catch (SQLException e) {
+                    Log.e("Database", "Erreur de changement de Chambre : " + e.getMessage());
+                }
+
+                Log.d("Rooms", room.getName().toCharArray()[1] + "" + room.getName().toCharArray()[2]);
+                RoomManager.removeGuestRoomIndication(roomFrames.get(Integer.valueOf(room.getName().toCharArray()[1] + "" + room.getName().toCharArray()[2])), null);
+
                 popupWindow.dismiss();
             }
         });

@@ -100,4 +100,11 @@ public class RoomManager
             guestRoom.setOnClickListener(onClickListener);
         }
     }
+
+    public static void removeGuestRoomIndication(FrameLayout roomFrame, View.OnClickListener onClickListener)
+    {
+        roomFrame.setBackgroundResource(R.drawable.border);
+        roomFrame.setPadding(ROOM_FRAME_PADDING, ROOM_FRAME_PADDING, ROOM_FRAME_PADDING, ROOM_FRAME_PADDING);
+        roomFrame.setOnClickListener(onClickListener);
+    }
 }
