@@ -9,4 +9,6 @@
     <string name="rechercher">Rechercher...</string>
     <string name="afficher_invites_restants">Afficher les invités restants</string>
     <string name="plan_chambres">Plan des chambres</string>
+    <string name="retirer_de_chambre">Retirer de la chambre</string>
+    <string name="ok">OK</string>
 </resources>

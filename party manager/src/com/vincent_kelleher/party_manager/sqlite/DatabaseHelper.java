@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
+import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.vincent_kelleher.party_manager.entities.Guest;
@@ -15,7 +16,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper
 {
 
     private static final String DATABASE_NAME = "party_manager.db";
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 14;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -27,6 +28,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper
             Log.i(DatabaseHelper.class.getName(), "onCreate");
             TableUtils.createTable(connectionSource, Guest.class);
             TableUtils.createTable(connectionSource, Room.class);
+            useFixtures();
         } catch (SQLException e) {
             Log.e(DatabaseHelper.class.getName(), "Can't create database", e);
             throw new RuntimeException(e);
@@ -43,6 +45,15 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper
         } catch (SQLException e) {
             Log.e(DatabaseHelper.class.getName(), "Can't drop databases", e);
             throw new RuntimeException(e);
+        }
+    }
+
+    private void useFixtures()
+    {
+        try {
+            DataFixture.hydrateDatabase((Dao<Room, Integer>) getDao(Room.class), (Dao<Guest, Integer>) getDao(Guest.class));
+        } catch (SQLException e) {
+            Log.e("Database", "Erreur d'extraction des DAO : " + e.getMessage());
         }
     }
 

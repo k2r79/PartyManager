@@ -18,7 +18,7 @@ import com.j256.ormlite.dao.Dao;
 import com.vincent_kelleher.party_manager.bitmap.BitmapUtils;
 import com.vincent_kelleher.party_manager.entities.Guest;
 import com.vincent_kelleher.party_manager.sqlite.DAOFactory;
-import com.vincent_kelleher.party_manager.utilities.RoomManager;
+import com.vincent_kelleher.party_manager.room.RoomManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -88,7 +88,7 @@ public class GuestDetailsFragment extends Fragment
         guestHeadcount.setOnSeekBarChangeListener(new GuestHeadcountListener());
         guestHeadcountValue.setText(String.valueOf(guest.getHeadcount()) + " personnes");
 
-        RoomManager.indicateGuestRoom(guest.getRoom(), roomFrames, true);
+        RoomManager.indicateGuestRoom(guest.getRoom(), roomFrames, null, true);
     }
 
     @Override

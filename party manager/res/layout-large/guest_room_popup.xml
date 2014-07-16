@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:padding="20dp"
+              android:background="@drawable/room_pop_up">
+
+    <LinearLayout android:orientation="horizontal"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content">
+
+        <com.vincent_kelleher.party_manager.bitmap.RoundedImageView
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:id="@+id/guest_image"
+                android:src="@drawable/unknown_guest"
+                android:scaleType="centerCrop"/>
+
+        <RelativeLayout android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="20dp"
+                        android:paddingRight="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/room_popup_guest_name"
+                android:textSize="22dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/room_popup_guest_headcount"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:textSize="16dp"
+                android:textColor="#999999"
+                android:layout_below="@+id/room_popup_guest_name"
+                android:layout_alignLeft="@id/room_popup_guest_name"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/retirer_de_chambre"
+                android:id="@+id/room_popup_remove_from_room"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"/>
+
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ok"
+                android:id="@+id/room_popup_ok"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

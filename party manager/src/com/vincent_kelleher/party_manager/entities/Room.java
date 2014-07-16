@@ -12,6 +12,9 @@ public class Room
     @DatabaseField
     private String name;
 
+    @DatabaseField(canBeNull = true, foreign = true, foreignAutoRefresh = true)
+    private Guest guest;
+
     public Room()
     {
     }
@@ -29,5 +32,15 @@ public class Room
     public void setName(String name)
     {
         this.name = name;
+    }
+
+    public Guest getGuest()
+    {
+        return guest;
+    }
+
+    public void setGuest(Guest guest)
+    {
+        this.guest = guest;
     }
 }

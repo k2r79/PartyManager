@@ -1,7 +1,8 @@
-package com.vincent_kelleher.party_manager.utilities;
+package com.vincent_kelleher.party_manager.room;
 
 import android.app.Activity;
 import android.util.TypedValue;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -80,12 +81,13 @@ public class RoomManager
         return roomFrame;
     }
 
-    public static void indicateGuestRoom(Room room, Map<Integer, FrameLayout> roomFrames, boolean resetOtherRooms)
+    public static void indicateGuestRoom(Room room, Map<Integer, FrameLayout> roomFrames, View.OnClickListener onClickListener, boolean resetOtherRooms)
     {
         if (resetOtherRooms) {
             for (FrameLayout roomFrame : roomFrames.values()) {
                 roomFrame.setBackgroundResource(R.drawable.border);
                 roomFrame.setPadding(ROOM_FRAME_PADDING, ROOM_FRAME_PADDING, ROOM_FRAME_PADDING, ROOM_FRAME_PADDING);
+                roomFrame.setOnClickListener(null);
             }
         }
 
@@ -95,6 +97,7 @@ public class RoomManager
             FrameLayout guestRoom = roomFrames.get(Integer.valueOf(roomNumber));
             guestRoom.setBackgroundResource(R.drawable.background_green);
             guestRoom.setPadding(ROOM_FRAME_PADDING, ROOM_FRAME_PADDING, ROOM_FRAME_PADDING, ROOM_FRAME_PADDING);
+            guestRoom.setOnClickListener(onClickListener);
         }
     }
 }

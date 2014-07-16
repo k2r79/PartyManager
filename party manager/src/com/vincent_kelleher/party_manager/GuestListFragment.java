@@ -13,7 +13,6 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.vincent_kelleher.party_manager.entities.Guest;
 import com.vincent_kelleher.party_manager.sqlite.DAOFactory;
-import com.vincent_kelleher.party_manager.sqlite.GuestFixture;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -62,11 +61,6 @@ public class GuestListFragment extends Fragment
         guestDao = ((DAOFactory) getActivity().getApplication()).getGuestDao();
 
         extractGuests();
-
-        if (guests.size() < 1) {
-            GuestFixture.hydrateDatabase(guestDao);
-            extractGuests();
-        }
     }
 
     private void extractGuests()
