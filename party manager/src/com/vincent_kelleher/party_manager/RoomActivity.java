@@ -137,7 +137,9 @@ public class RoomActivity extends Activity
                     Log.e("Database", "Erreur de changement de Chambre : " + e.getMessage());
                 }
 
-                RoomManager.removeGuestRoomIndication(roomFrames.get(getRoomFrameIndex(room)), null);
+                FrameLayout newlyEmptyRoom = roomFrames.get(getRoomFrameIndex(room));
+                RoomManager.removeGuestRoomIndication(newlyEmptyRoom, null);
+                newlyEmptyRoom.setOnClickListener(new EmptyRoomClickListener(room));
 
                 popupWindow.dismiss();
             }
@@ -197,6 +199,7 @@ public class RoomActivity extends Activity
                 }
 
                 popupWindow.dismiss();
+                RoomManager.indicateGuestRoom(room, roomFrames, new GuestRoomClickListener(room), false);
             }
         });
 
@@ -222,7 +225,7 @@ public class RoomActivity extends Activity
                 }
 
                 popupWindow.dismiss();
-                recreate();
+                RoomManager.indicateGuestRoom(room, roomFrames, new GuestRoomClickListener(room), false);
             }
         });
 
@@ -233,7 +236,6 @@ public class RoomActivity extends Activity
             public void onClick(View v)
             {
                 popupWindow.dismiss();
-                recreate();
             }
         });
     }
