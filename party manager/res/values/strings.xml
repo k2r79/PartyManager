@@ -11,4 +11,9 @@
     <string name="plan_chambres">Plan des chambres</string>
     <string name="retirer_de_chambre">Retirer de la chambre</string>
     <string name="ok">OK</string>
+    <string name="choisir_invites">Choisir des invités</string>
+    <string name="nouvel_invite">Nouvel invité</string>
+    <string name="nom">Nom...</string>
+    <string name="annuler">Annuler</string>
+    <string name="valider">Valider</string>
 </resources>

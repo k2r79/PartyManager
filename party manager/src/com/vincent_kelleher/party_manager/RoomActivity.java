@@ -23,13 +23,13 @@ public class RoomActivity extends Activity
     private Dao<Guest, Integer> guestDao;
     private Map<Integer, FrameLayout> roomFrames = new HashMap<Integer, FrameLayout>();
     private List<Room> guestRooms;
+    private View popupView;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
         roomDao = ((DAOFactory) getApplication()).getRoomDao();
@@ -68,8 +68,15 @@ public class RoomActivity extends Activity
         for (Room room : guestRooms) {
             if (room.getGuest() != null) {
                 RoomManager.indicateGuestRoom(room, roomFrames, new GuestRoomClickListener(room), false);
+            } else {
+                roomFrames.get(getRoomFrameIndex(room)).setOnClickListener(new EmptyRoomClickListener(room));
             }
         }
+    }
+
+    private int getRoomFrameIndex(Room room)
+    {
+        return Integer.valueOf(room.getName().toCharArray()[1] + "" + room.getName().toCharArray()[2]);
     }
 
     private class GuestRoomClickListener implements View.OnClickListener
@@ -130,11 +137,131 @@ public class RoomActivity extends Activity
                     Log.e("Database", "Erreur de changement de Chambre : " + e.getMessage());
                 }
 
-                Log.d("Rooms", room.getName().toCharArray()[1] + "" + room.getName().toCharArray()[2]);
-                RoomManager.removeGuestRoomIndication(roomFrames.get(Integer.valueOf(room.getName().toCharArray()[1] + "" + room.getName().toCharArray()[2])), null);
+                RoomManager.removeGuestRoomIndication(roomFrames.get(getRoomFrameIndex(room)), null);
 
                 popupWindow.dismiss();
             }
         });
+    }
+
+    private class EmptyRoomClickListener implements View.OnClickListener
+    {
+        private Room room;
+
+        public EmptyRoomClickListener(Room room)
+        {
+            this.room = room;
+        }
+
+        @Override
+        public void onClick(View v)
+        {
+            createEmptyRoomPopup(v, room);
+        }
+    }
+
+    private void createEmptyRoomPopup(View v, final Room room)
+    {
+        LayoutInflater layoutInflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        popupView = layoutInflater.inflate(R.layout.empty_room_popup, null);
+
+        final PopupWindow popupWindow = new PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        popupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
+        popupWindow.showAsDropDown(v);
+
+        final Spinner guestSelector = (Spinner) popupView.findViewById(R.id.room_popup_guest_selector);
+        List<Guest> guests = null;
+        try {
+            guests = guestDao.queryBuilder().where().isNull("room_id").query();
+        } catch (SQLException e) {
+            Log.e("Database", "Erreur d'extraction des Invités : " + e.getMessage());
+        }
+        GuestSpinnerAdapter guestSpinnerAdapter = new GuestSpinnerAdapter(this, guests);
+        guestSelector.setAdapter(guestSpinnerAdapter);
+
+        Button guestValidateButton = (Button) popupView.findViewById(R.id.room_popup_guest_validate);
+        guestValidateButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Guest selectedGuest = (Guest) guestSelector.getSelectedItem();
+
+                room.setGuest(selectedGuest);
+                try {
+                    roomDao.update(room);
+                    selectedGuest.setRoom(room);
+                    guestDao.update(selectedGuest);
+                } catch (SQLException e) {
+                    Log.e("Database", "Erreur de mise à jour : " + e.getMessage());
+                }
+
+                popupWindow.dismiss();
+            }
+        });
+
+        final EditText newGuestName = (EditText) popupView.findViewById(R.id.room_popup_new_guest_name);
+        final SeekBar newGuestHeadcount = (SeekBar) popupView.findViewById(R.id.room_popup_new_guest_headcount);
+        newGuestHeadcount.setOnSeekBarChangeListener(new NewGuestHeadcountListener());
+
+        Button newGuestValidateButton = (Button) popupView.findViewById(R.id.room_popup_new_guest_validate);
+        newGuestValidateButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Guest newGuest = new Guest(newGuestName.getText().toString(), (int) (newGuestHeadcount.getProgress() / 10));
+
+                room.setGuest(newGuest);
+                try {
+                    guestDao.create(newGuest);
+                    newGuest.setRoom(room);
+                    roomDao.update(room);
+                } catch (SQLException e) {
+                    Log.e("Database", "Erreur de mise à jour : " + e.getMessage());
+                }
+
+                popupWindow.dismiss();
+                recreate();
+            }
+        });
+
+        Button cancelButton = (Button) popupView.findViewById(R.id.room_popup_cancel);
+        cancelButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                popupWindow.dismiss();
+                recreate();
+            }
+        });
+    }
+
+    private class NewGuestHeadcountListener implements SeekBar.OnSeekBarChangeListener
+    {
+        private int headcount;
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
+        {
+            headcount = (int) (progress / 10);
+
+            TextView guestHeadcountValue = (TextView) popupView.findViewById(R.id.room_popup_new_guest_headcount_value);
+            guestHeadcountValue.setText(String.valueOf(headcount) + " personnes");
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar)
+        {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar)
+        {
+
+        }
+
     }
 }

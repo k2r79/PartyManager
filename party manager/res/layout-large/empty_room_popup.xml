@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:minWidth="700dp"
+              android:background="@drawable/room_popup"
+              android:padding="20dp">
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/listSeparatorTextViewStyle"
+            android:text="@string/choisir_invites"
+            android:id="@+id/room_popup_guest_selector_divider"/>
+
+    <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/room_popup_guest_selector"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:spinnerMode="dialog"/>
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/valider"
+                android:id="@+id/room_popup_guest_validate"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/listSeparatorTextViewStyle"
+            android:text="@string/nouvel_invite"
+            android:id="@+id/room_popup_new_guest_divider"
+            android:layout_marginTop="10dp"/>
+
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:hint="@string/nom"
+            android:ems="10"
+            android:id="@+id/room_popup_new_guest_name"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"/>
+
+    <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/room_popup_new_guest_headcount"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/room_popup_new_guest_headcount_value"
+            android:layout_gravity="center_horizontal"/>
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/annuler"
+                android:id="@+id/room_popup_cancel"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"/>
+
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/valider"
+                android:id="@+id/room_popup_new_guest_validate"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
+
+</LinearLayout>
