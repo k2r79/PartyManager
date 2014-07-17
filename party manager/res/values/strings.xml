@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">party manager</string>
+    <string name="app_name">Party Manager</string>
     <string name="recherche">Recherche...</string>
+    <string name="present">Présent</string>
+    <string name="telephone">Téléphone</string>
+    <string name="effectif">Effectif</string>
+    <string name="chambre">Chambre</string>
+    <string name="rechercher">Rechercher...</string>
+    <string name="afficher_invites_restants">Afficher les invités restants</string>
+    <string name="plan_chambres">Plan des chambres</string>
+    <string name="retirer_de_chambre">Retirer de la chambre</string>
+    <string name="ok">OK</string>
+    <string name="choisir_invites">Choisir des invités</string>
+    <string name="nouvel_invite">Nouvel invité</string>
+    <string name="nom">Nom...</string>
+    <string name="annuler">Annuler</string>
+    <string name="valider">Valider</string>
+    <string name="supprimer_invités">Êtes-vous sûr de vouloir supprimer ces invités ?</string>
 </resources>
