@@ -174,7 +174,7 @@ public class RoomActivity extends Activity
         final Spinner guestSelector = (Spinner) popupView.findViewById(R.id.room_popup_guest_selector);
         List<Guest> guests = null;
         try {
-            guests = guestDao.queryBuilder().where().isNull("room_id").query();
+            guests = guestDao.queryBuilder().orderBy("name", true).where().isNull("room_id").query();
         } catch (SQLException e) {
             Log.e("Database", "Erreur d'extraction des Invités : " + e.getMessage());
         }
@@ -217,8 +217,8 @@ public class RoomActivity extends Activity
 
                 room.setGuest(newGuest);
                 try {
-                    guestDao.create(newGuest);
                     newGuest.setRoom(room);
+                    guestDao.create(newGuest);
                     roomDao.update(room);
                 } catch (SQLException e) {
                     Log.e("Database", "Erreur de mise à jour : " + e.getMessage());

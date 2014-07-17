@@ -16,4 +16,5 @@
     <string name="nom">Nom...</string>
     <string name="annuler">Annuler</string>
     <string name="valider">Valider</string>
+    <string name="supprimer_invités">Êtes-vous sûr de vouloir supprimer ces invités ?</string>
 </resources>
