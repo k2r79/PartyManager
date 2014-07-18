@@ -50,6 +50,13 @@ public class DataFixture
             createGuest(guestDao, roomDao, "Joyeux Nathalie", 1, rooms.get("202"));
             createGuest(guestDao, roomDao, "Châtain Denis Fabienne", 2, rooms.get("223"));
             createGuest(guestDao, roomDao, "Cousines Adoptives", 3, rooms.get("201"));
+            createGuest(guestDao, roomDao, "Isabelle Thévissen", 1, rooms.get("203"));
+            createGuest(guestDao, roomDao, "Famille Fauve", 2, rooms.get("205"));
+            createGuest(guestDao, roomDao, "Michel", 3, rooms.get("207"));
+            createGuest(guestDao, roomDao, "Famille Poittevin", 2, rooms.get("209"));
+            createGuest(guestDao, roomDao, "Godin Marie-Agnès Pierre", 2, rooms.get("212"));
+            createGuest(guestDao, roomDao, "Florient Viguier", 2, rooms.get("210"));
+            createGuest(guestDao, roomDao, "Parents Florence", 2, null);
         } catch (SQLException e) {
             Log.e("Database", "Erreur d'hydratation des Invités : " + e.getMessage());
             e.printStackTrace();

@@ -26,3 +26,6 @@ local.properties
 bin/
 target
 gen/
+
+# Project Specific
+party manager/src/com/vincent_kelleher/party_manager/sqlite/DataFixture.java
